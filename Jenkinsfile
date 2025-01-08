@@ -32,10 +32,12 @@ pipeline {
 }
 
   }  
-  stage ('Docker && Custom Format'){
+  stage ('Docker && Custom Format') {
+    steps {
+
     //application name-version:
     echo "actual format: ${env.APPLICATION_NAME}-${env.POM_VERSION}-${env.POM_PACKAGING}"
-
+   }
   }
 }
 }
