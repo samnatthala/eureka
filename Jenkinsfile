@@ -23,8 +23,11 @@ pipeline {
         sh "mvn test"  
      }
      post {
-      junit '*/target/surefire-reports/*.xml'
-     }
+      success {
+        junit '*/target/surefire-reports/*.xml'
+  }
+}
+
   }  
 }
 }
