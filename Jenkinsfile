@@ -6,6 +6,10 @@ pipeline {
   environment {
     APPLICATION_NAME = "eureka"
   }
+  tools {
+    maven = "Mavenmy"
+    java = "java17"
+  }
   stages {
     stage ('Building the application') {
         steps {
@@ -13,5 +17,5 @@ pipeline {
             sh "mvn clean package"
         }
     }
-  }
+  
 }
