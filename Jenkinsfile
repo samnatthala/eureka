@@ -46,6 +46,10 @@ pipeline {
     steps {
        sh """
        ls -la 
+       ls -la ./.cicd
+       cp ${workspace}/target/i27-${env.APPLICATION_NAME}-${env.POM_VERSION}-${env.POM_PACKAGING}  ./.cicd
+       ls -la ./.cicd
+
        """
     }
 
