@@ -8,6 +8,7 @@ pipeline {
     POM_VERSION = readMavenPom().getVersion()
     POM_PACKAGING = readMavenPom().getPackaging()
     DOCKER_HUB = "docker.io/dravikumar442277"
+    DOCEKR_CREDS = credentails('dravikumar442277_docker_creds')
 
   }
   tools {
@@ -53,6 +54,9 @@ pipeline {
        echo ************docker build now working********
        docker build  --force-rm --no-cache --pull --rm=true  -t ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}  ./.cicd
        docker images
+       echo ************docker login now ********
+       docker login ${DOCKER_HUB} -u ${CEKR_CREDS_USR} -p password ${CEKR_CREDS_PSW}
+
        """
     }
 
