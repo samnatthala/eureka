@@ -9,7 +9,7 @@ pipeline {
     POM_PACKAGING = readMavenPom().getPackaging()
     DOCKER_HUB = "docker.io/dravikumar442277"
     DOCKER_CREDS = credentials('dravikumar442277_docker_creds')
-    SONAR_URL = "http://34.57.80.29:9000"
+    SONAR_URL = "http://34.68.0.0:9000"
     SONAR_TOKENS = credentials('sonar_token')
   }
   tools {
@@ -39,7 +39,7 @@ pipeline {
         sh """
            echo " Now started sonar code quality coverage stage now"
            mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=my-eureka-app01 \
+            -Dsonar.projectKey=127-eureka \
             -Dsonar.host.url=${env.SONAR_URL} \
             -Dsonar.login=${env.SONAR_TOKENS}
         """
