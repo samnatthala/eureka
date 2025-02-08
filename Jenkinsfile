@@ -9,7 +9,7 @@ pipeline {
     POM_PACKAGING = readMavenPom().getPackaging()
     DOCKER_HUB = "docker.io/dravikumar442277"
     DOCKER_CREDS = credentials('dravikumar442277_docker_creds')
-    SONAR_URL = "http://34.68.0.0:9000"
+    SONAR_URL = "http://34.56.114.45:9000"
     SONAR_TOKENS = credentials('sonar_token')
   }
   tools {
