@@ -78,9 +78,7 @@ pipeline {
       echo "*****************Deploying to Dev Environment here########################"
       withCredentials([usernamePassword(credentialsId: 'maha_creds_docker', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
     // some block
-     # sshpass -p password -v user@ipaddress command
-     #sshpass -pfoobar ssh -o StrictHostKeyChecking=no user@host command_to_run
-
+    
       sh "sshpass -p ${PASSWORD} -o  StrictHostKeyChecking=no -v ${USERNAME}@${docker_server_ip} hostname "
 }
    
