@@ -79,7 +79,7 @@ pipeline {
       withCredentials([usernamePassword(credentialsId: 'maha_creds_docker', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
     // some block
     
-      sh "sshpass -p ${PASSWORD} -o  StrictHostKeyChecking=no -v ${USERNAME}@${docker_server_ip} hostname "
+      sh "sshpass -p ${PASSWORD} -v ssh -o  StrictHostKeyChecking=no  ${USERNAME}@${docker_server_ip} hostname "
 }
    
     }
