@@ -135,4 +135,7 @@ stage ('Deploy to docker test server') {
 
 }
 }
+  }
+}
+ 
 
