@@ -194,5 +194,4 @@ stage('Deploy to docker $envDeploy server') {
 }
    
    }
-
 }
