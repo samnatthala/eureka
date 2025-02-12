@@ -10,31 +10,31 @@ pipeline {
   
   parameters {
     choice(name: 'sonarScans',
-          choices: 'no','yes',
+          choices: 'no\nyes',
           description: 'This will scan the applicaiton using sonar'
     )
     choice(name:'buildOnly',
-          choices: 'no','yes',
+          choices: 'no\nyes',
           description: 'This will only build the application'
     )
     choice(name: 'dockerPush',
-            choices: 'no','yes',
+            choices: 'no\nyes',
             description: "This will trigger the build, docker build and docker push"
         )
     choice(name: 'deployToDev',
-            choices: 'no','yes',
+            choices: 'no\nyes',
             description: "This will Deploy my app to Dev env"
         )
     choice(name: 'deployToTest',
-            choices: 'no','yes',
+            choices: 'no\nyes',
             description: "This will Deploy my app to Test env"
         )
     choice(name: 'deployToStage',
-            choices: 'no','yes',
+            choices: 'no\nyes',
             description: "This will Deploy my app to Stage env"
         )
     choice(name: 'deployToProd',
-            choices: 'no','yes',
+            choices: 'no\nyes',
             description: "This will Deploy my app to Prod env"
         )
   }
