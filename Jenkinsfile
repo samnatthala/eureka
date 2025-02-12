@@ -54,8 +54,9 @@ pipeline {
        when {
         anyOf {
             expression {
-               params.buildOnly == 'yes'
                params.dockerPush == 'yes'
+               params.buildOnly == 'yes'
+               
             } 
         }
        }
