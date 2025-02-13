@@ -88,7 +88,7 @@ pipeline {
       }
     }
 
-   /* stage ('Deploy to docker test server') {
+    stage ('Deploy to docker test server') {
       steps {
         echo "*****************Deploying to Test Environment here########################"
         withCredentials([usernamePassword(credentialsId: 'maha_creds_docker', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
@@ -106,7 +106,7 @@ pipeline {
             sh "sshpass -p ${PASSWORD} -v ssh -o  StrictHostKeyChecking=no  ${USERNAME}@${docker_server_ip} docker run -d -p 6761:8761 --name ${env.APPLICATION_NAME}-test ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
           }
         }
-      } */
+      } 
     }
   } // Closing 'stages' block
 } // Closing 'pipeline' block
