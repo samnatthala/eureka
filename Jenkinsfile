@@ -138,6 +138,9 @@ pipeline {
             anyOf {
                     expression {
                         
+                        
+                        params.dockerPush == 'yes'
+                        params.buildOnly == 'yes'
                         params.deployToDev == 'yes'
                     }
                 }
