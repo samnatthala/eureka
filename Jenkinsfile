@@ -242,7 +242,7 @@ def buildApp(){
 } 
 // this method going to build and push the docker image.
 // Define the dockerBuildandPush method outside the pipeline block
-def dockerBuildandPush() {
+def DockerBuildandPush() {
     return {
         sh "cp ${workspace}/target/i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} ./.cicd"
         echo "listing files in .cicd folder"
