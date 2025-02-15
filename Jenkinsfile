@@ -122,8 +122,10 @@ pipeline {
                 }
       } 
       steps {
-       
-        DockerBuildandPush().call()
+        script {
+          DockerBuildandPush().call()
+        }
+         
 
       
       }
