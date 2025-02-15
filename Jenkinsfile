@@ -137,6 +137,7 @@ pipeline {
      when {
             anyOf {
                     expression {
+                        
                         params.deployToDev == 'yes'
                     }
                 }
@@ -238,20 +239,22 @@ def buildApp(){
 } 
 // this method going to build and push the docker image.
 def DockerBuildandPush() {
-  return {
-         
-        sh "cp ${workspace}/target/i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} ./.cicd"
-        echo "listing files in .cicd folder"
-        sh "ls -la ./.cicd"
-        echo "******************** Building Docker Image ********************"
-        
-        sh "docker build --force-rm --no-cache --pull --rm=true --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} --build-arg JAR_DEST=i27-${env.APPLICATION_NAME}-${currentBuild.number}-${BRANCH_NAME}.${env.POM_PACKAGING} \
-            -t ${env.DOCKER_HUB}/${env.DOCKER_REPO}:$GIT_COMMIT ./.cicd"
-        
-        echo "******************** Logging to Docker Registry ********************"
-        sh "docker login -u ${DOCKER_CREDS_USR} -p ${DOCKER_CREDS_PSW}"
-        sh "docker push ${env.DOCKER_HUB}/${env.DOCKER_REPO}:$GIT_COMMIT"
-         
-
-  }
+    return {
+        try {
+            echo "Building Docker Image"
+            sh "docker build --force-rm --no-cache --pull --rm=true --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} ."
+            
+            echo "Logging into Docker registry"
+            sh "docker login -u ${DOCKER_CREDS_USR} -p ${DOCKER_CREDS_PSW}"
+            
+            echo "Pushing Docker image to registry"
+            sh "docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+        } catch (Exception e) {
+            echo "Docker build/push failed. Retrying..."
+            retry(3) {
+                sh "docker build --force-rm --no-cache --pull --rm=true --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING} ."
+                sh "docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+            }
+        }
+    }
 }
