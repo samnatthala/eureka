@@ -60,8 +60,7 @@ pipeline {
         }
        }
         steps {
-            echo "this is ${env.APPLICATION_NAME} application"
-            sh "mvn clean package -DskipTests=True"
+           buildApp().call()
         } 
     }
     stage ('unit test cases') {
@@ -123,18 +122,10 @@ pipeline {
                 }
       } 
       steps {
-         sh """
-         ls -la 
-         ls -la ./.cicd
-         cp ${workspace}/target/i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}  ./.cicd
-         ls -la ./.cicd
-         echo ************docker build now working********
-         docker build  --force-rm --no-cache --pull --rm=true --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}  -t ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}  ./.cicd
-         docker images
-         echo ************docker login now ********
-         docker login  -u ${DOCKER_CREDS_USR} -p ${DOCKER_CREDS_PSW}
-         docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}
-         """
+       
+        DockerBuildandPush().call()
+
+      
       }
     }
     stage ('Deploy to Dev') {
@@ -147,6 +138,7 @@ pipeline {
           } 
       steps {
        script {
+        ImageValidation().call()
         dockerDeploy ('dev','5761','8761').call()
        }
       }
@@ -161,6 +153,7 @@ pipeline {
         }
       steps {
        script {
+        ImageValidation().call()
         dockerDeploy ('test','6761','8761').call()
        }
       }
@@ -175,6 +168,7 @@ pipeline {
             }
       steps {
        script {
+        ImageValidation().call()
         dockerDeploy ('prod','7761','8761').call()
        }
       }
@@ -210,4 +204,42 @@ def dockerDeploy(envDeploy, hostPort, contPort) {
             }
         }
     }
+}
+
+// Imagevalidation step before goes to dev or stage or prod
+
+def ImageValidation() {
+  return {
+    println("Pulling the Docker Image")
+    try {
+      sh "docker pull ${env.DOCKER_HUB}/${env.DOCKER_REPO}:$GIT_COMMIT"
+      println ("Pull Success,!!! Deploying !!!!!")
+    }
+    catch(Exception e) {
+     println("OOPS, Docker image with this tag is not available")
+     println("So, Building the app, creating the image and pushing to registry")
+     buildApp().call()
+     DockerBuildandPush().call()
+    }
+ }
+  }
+// building the application using methods
+def buildApp(){
+  return {
+      echo "this is ${env.APPLICATION_NAME} application"
+      sh "mvn clean package -DskipTests=True"
+
+  }
+} 
+// this method going to build and push the docker image.
+def DockerBuildandPush() {
+  return {
+         echo ************docker build now working********
+         docker build  --force-rm --no-cache --pull --rm=true --build-arg JAR_SOURCE=i27-${env.APPLICATION_NAME}-${env.POM_VERSION}.${env.POM_PACKAGING}  -t ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}  ./.cicd
+         docker images
+         echo ************docker login now ********
+         docker login  -u ${DOCKER_CREDS_USR} -p ${DOCKER_CREDS_PSW}
+         docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}
+
+  }
 }
