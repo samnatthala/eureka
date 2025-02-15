@@ -60,7 +60,10 @@ pipeline {
         }
        }
         steps {
-           buildApp().call()
+           script {
+             buildApp().call()
+           }
+           
         } 
     }
     stage ('unit test cases') {
