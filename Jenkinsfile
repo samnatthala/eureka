@@ -1,7 +1,7 @@
 
 pipeline {
     agent {
-        label 'maven-slave'
+        label 'k8s-slave'
     } 
     tools {
         maven 'Maven3.8.8' 
