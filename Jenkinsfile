@@ -139,9 +139,9 @@ pipeline {
                 }
           } 
       steps {
-       script {
-        imageValidation().call()
-        dockerDeploy ('dev','5761','8761').call()
+        script {
+             imageValidation().call()
+             dockerDeploy ('dev','5761','8761').call()
        }
       }
     }
@@ -180,8 +180,8 @@ pipeline {
 // Define the dockerDeploy method outside the pipeline block
 def dockerDeploy(envDeploy, hostPort, contPort) {
     return {
-        echo "******************** Deploying to $envDeploy Environment ********************"
-        stage ('Deploy to docker dev server') {
+        
+        stage ('Deploying to  Environment') {
             script {
                 withCredentials([usernamePassword(credentialsId: 'maha_creds_docker', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     // some block
