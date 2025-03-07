@@ -1,4 +1,4 @@
-@library("com.i27academy.slb@main") _
+@library("com.i27academy.slb@master") _
 dockerPipeline()
 
 
