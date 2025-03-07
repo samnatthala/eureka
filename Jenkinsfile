@@ -1,4 +1,8 @@
+@library("com.i27academy.slb@main") _
+dockerPipeline()
 
+echo "igonred below lines"
+/*
 pipeline {
   agent {
     label 'k8s-slave'
@@ -248,3 +252,5 @@ def dockerBuildandPush() {
         echo "***** push done successfully ****************************"
     }
 }
+*/
+
