@@ -6,10 +6,12 @@ ENV JAR_SOURCE  ${JAR_SOURCE}
 ENV JAR_DEST ${JAR_DEST}
 RUN mkdir -p /opt/i27/
 WORKDIR /opt/i27/
-COPY ["${JAR_SOURCE}", "/opt/i27/i27cart-eureka.jar"]
+ARG APPLICATION_NAME
+APPLICATION_NAME = "${pipelineparams.appName}"
+COPY ["${JAR_SOURCE}", "/opt/i27/i27cart-${env.APPLICATION_NAM}.jar"]
 RUN chmod 777 /opt/i27/
 EXPOSE 8761
-CMD ["java", "-jar", "/opt/i27/i27cart-eureka.jar"]
+CMD ["java", "-jar", "/opt/i27/i27cart-${env.APPLICATION_NAM}.jar"]
 
 # ----adding new docker configuration ****************
 #FROM openjdk:11 AS app
